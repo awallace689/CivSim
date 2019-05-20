@@ -17,22 +17,35 @@ class Gaia {
     }
 
     willEntitiesCollideWithNew(x, y, radius) {
-        for(entity in this.entitySet) {
-            let seperation = Math.sqrt((entity.x - x) * (entity.y - y));
-            if(seperation < (radius + entity.rad)){
-                return false;
+        let failed = false;
+        let count = 0;
+        for(let i = 0; i < this.entitySet.size; i++) {
+            let arrayFromSet = Array.from(this.entitySet);
+            let seperation = Math.sqrt((arrayFromSet[i].x - x) * (arrayFromSet[i].x - x)
+                + (arrayFromSet[i].y - y) * (arrayFromSet[i].y - y));
+            console.log(`Seperation: ${seperation}, Rad + rad2: ${radius + arrayFromSet[i].rad}`);
+            if(seperation < (radius + arrayFromSet[i].rad)){
+                failed = true;
             }
+            count++;
         }
+        if(failed) {
+            console.log(`Object (${x}, ${y}) -- FAILED`);
+            return false;
+        }
+        console.log(`Object (${x}, ${y}) -- PASS`);
         return true;
     }
 
     willEntityBeInBounds(x, y, radius) {
-        if(x - radius >= 0 &&
-            x + radius < WIDTH &&
-            y - radius >= 0 &&
-            y + radius < HEIGHT) {
-                return true;
-            }
+        if(
+        x - radius >= 0 &&
+        x + radius < WIDTH &&
+        y - radius >= 0 &&
+        y + radius < HEIGHT
+        ) {
+            return true;
+        }
         return false;
     }
 
@@ -128,7 +141,8 @@ function main() {
         rc = getRandomCircleInfo();
         g.spawn(new Circle(c, rc['x'], rc['y'], 25, rc['r'], rc['g'], rc['b']));
     }
-    console.log(g.entitySet)
+    console.log(g.entitySet.entries());
+    clearCanvas(c);
     drawEntities(g);
 }
 
@@ -176,10 +190,14 @@ function getRandomCircleInfo() {
 /// @param color {}
 /// @return: undefined
 function drawCircle(context, x, y, rad, color) {
-    context.clearRect(0, 0, WIDTH - 1, HEIGHT - 1);
     context.beginPath();
     context.moveTo(x, y);
     context.arc(x, y, rad, 0, 2 * Math.PI);
     context.fillStyle = color ? color : 'black';
     context.fill();
+}
+
+function clearCanvas(context) {
+    context.clearRect(0, 0, WIDTH - 1, HEIGHT - 1);
+
 }
