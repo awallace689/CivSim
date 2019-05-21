@@ -17,7 +17,7 @@ window.onload = () => {
 
 /** Returns game canvas rendering object.
 * 
-* @return CanvasRenderingContext2D
+* @returns CanvasRenderingContext2D
 */
 function getContext() {
     let canvas = document.getElementById('game');
@@ -44,7 +44,7 @@ function main() {
     console.log(c);
 
     // Initialize Entity manager
-    let g = new Gaia(c);
+    let g = new Gaia();
 
 
     // Draw a 'n' random cities.

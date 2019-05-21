@@ -1,15 +1,27 @@
+/**
+ * Shapes define a draw method, which uses canvas to draw
+ * themselves according to their Entity's properties.
+ */
 class Shape {
     constructor() {
 
     }
 
+    /**
+     * Draw self according to en
+     *
+     * @abstract
+     */
     draw() {
         throw Error();
     }
 }
 
 /**
- * @param {VisibleEntity} entity entity circle is delegate of
+ * Circle 'draws' a circle with drawCircle according to its
+ * entity's properties.
+ *
+ * @param {VisibleEntity} entity this Circle is a delegate of this
  */
 class Circle extends Shape {
     constructor(entity) {
@@ -17,7 +29,8 @@ class Circle extends Shape {
         this.entity = entity;
     }
 
-    /** Draw circle at position ('x', 'y'), with radius 'rad'.
+    /** 
+    * Draw circle at position ('x', 'y'), with radius 'rad'.
     * 
     * @param {CanvasRenderingContext2D} context canvas render context
     * @param {Number} x x-pos
@@ -38,6 +51,11 @@ class Circle extends Shape {
         context.fill();
     }
 
+    /**
+     * Calls drawCircle.
+     *
+     * @returns undefined
+     */
     draw() {
         this.drawCircle(this.entity.context);
     }
@@ -48,6 +66,16 @@ class Circle extends Shape {
 }
 
 
+/**
+ * @returns object ex. {
+ *                      'r': {Number}
+ *                      'g': {Number}
+ *                      'b': {Number}
+ *                      'rad': {Number}
+ *                      'x': {Number}
+ *                      'y': {Number}
+ *                     }
+ */
 function getRandomCircleInfo() {
     let rad = Math.floor(Math.random() * 200);
     return {
