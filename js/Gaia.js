@@ -1,6 +1,7 @@
 class Gaia {
     constructor(context) {
         this.context = context;
+        this.tester = new EntityTester(context);
         this.entitySet = new Set();
     }
 
@@ -9,7 +10,7 @@ class Gaia {
         return tester.runTests(
             tester.testWillNotCollideWithExisting(x, y, radius),
             tester.testWillEntityBeInBounds(x, y, radius),
-            tester.testMinDistanceBetweenAny(x, y, radius, 25)
+            tester.testMinDistanceBetweenAny(x, y, radius, 100)
         );
     }
 
@@ -42,7 +43,23 @@ class Gaia {
 
 
 class SpawnStrategy {
-    constructor(entity) {
+    constructor() { }
 
+    runCitySpawnTests(entity) {
+        return this.tester.runTests(
+            tester.testWillNotCollideWithExisting(entity.x, entity.y, entity.rad),
+            tester.testWillEntityBeInBounds(entity.x, entity.y, entity.rad),
+            tester.testMinDistanceBetweenAny(entity.x, entity.y,
+                entity.rad, CITY_SPAWN_SEPERATION));
+    }
+
+    runTests(...tests) {
+
+        tests.forEach(test => {
+            if (!tester.runTests(test)) {
+                return false;
+            }
+        });
+        return true;
     }
 }

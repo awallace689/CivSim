@@ -23,16 +23,18 @@ class Circle extends Shape {
     * @param {Number} x x-pos
     * @param {Number} y y-pos
     * @param {Number} rad radius
-    * @param {} color rgb object ex. {r: 255, g: 255, b: 255} 
+    * @param {} color rgb object ex. {'r': 255, 'g': 255, 'b': 255} 
     * @return: undefined
     */
     drawCircle(context) {
         context.beginPath();
         context.moveTo(this.entity.x, this.entity.y);
         context.arc(this.entity.x, this.entity.y, this.entity.rad, 0, 2 * Math.PI);
-        context.fillStyle = this.entity.color ? `rgb(${this.entity.color['r']},
-            ${this.entity.color['g']},
-            ${this.entity.color['b']})` : 'black';
+        context.fillStyle = this.entity.color
+            ? `rgb(${this.entity.color['r']},
+                ${this.entity.color['g']},
+                ${this.entity.color['b']})`
+            : 'black';
         context.fill();
     }
 
@@ -40,8 +42,8 @@ class Circle extends Shape {
         this.drawCircle(this.entity.context);
     }
 
-    getPointOnRadiusAtAngle(angle) { 
-        
+    getPointOnRadiusAtAngle(angle) {
+
     }
 }
 

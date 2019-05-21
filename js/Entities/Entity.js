@@ -22,7 +22,7 @@ class VisibleEntity extends Entity {
     }
 
     draw() {
-        shape.draw();
+        this.shape.draw();
     }
 }
 
