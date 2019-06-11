@@ -62,11 +62,11 @@ class VisibleEntity extends Entity {
      * @param {Number} g [0-255]
      * @param {Number} b [0-255]
      */
-    constructor(context, xpos, ypos, radius, r, g, b) {
+    constructor(context, xpos, ypos, radius, r, g, b, Shape) {
         super(xpos, ypos, radius);
         this.context = context;
         this.color = {'r':r, 'g':g, 'b':b};
-        this.shape = undefined;
+        this.shape = new Shape(this);
     }
 
     /** VisibleEntities delegate draw requests to their shape

@@ -3,10 +3,12 @@
  * Author: Adam Wallace
  * Date: 5/21/2019
  * Desc: Includes classes for Entities, objects with position
-         and radius, and the EntityTester that tests Entities' 
-         present or reqeuested state.
+         and radius, and the SpawnStrategy class which 
  ****************************************************************/
 const ENTITY_SPAWN_ATTEMPT_LIMIT = 300;
+const ENTITY_SPAWN_PLACE_INCREMENT_MULTIPLIER = 9;
+const BORDER_INSET = 75;
+
 
 /**
  * Manages all entities and their spawning.
@@ -28,9 +30,10 @@ class Gaia {
      * @param {Entity} entity
      * @returns Bool
      */
-    spawn(entity) {
+    spawnSingle(entity) {
         if (this.tester.runCitySpawnTests(entity)) {
             this.entitySet.add(entity);
+            entity['gaia'] = this;
             return true;
         }
         else {
@@ -47,17 +50,40 @@ class Gaia {
      */
     spawnRec(entity, n) {
         if (n < ENTITY_SPAWN_ATTEMPT_LIMIT) {
-            entity.x += (Math.random * entity.rad) * (Math.random() < .5 ? 1 : (-1));
-            entity.y += (Math.random * entity.rad) * (Math.random() < .5 ? 1 : (-1));
+            let newX = Math.floor(Math.random() * ((HEIGHT - entity.rad - BORDER_INSET) - (entity.rad + BORDER_INSET)) + (entity.rad + BORDER_INSET));
+            let newY = Math.floor(Math.random() * ((HEIGHT - entity.rad - BORDER_INSET) - (entity.rad + BORDER_INSET)) + (entity.rad + BORDER_INSET));
+            entity.x = newX;
+            entity.y = newY;
             if (this.tester.runCitySpawnTests(entity)) {
-                    this.entitySet.add(entity);
-                    return true;
+                this.entitySet.add(entity);
+                return true;
             }
             else {
                 return this.spawnRec(entity, n + 1);
             }
         }
         return false;
+    }
+
+    // FIX no Entity customization.
+    spawnMany(Entity, n, i = 0) {
+        let spawned = [];
+        let e;
+        while (i < n - 1) {
+            e = new Entity();
+            if (this.spawnSingle(e)) {
+                spawned.push(e);
+                console.log('spawned');
+                i++;
+            }
+            else {
+                if (spawned.length > 0) {
+                    spawned.pop().die();
+                    console.log('despawned');
+                    i--;
+                }
+            }
+        }
     }
 }
 
@@ -96,7 +122,7 @@ class SpawnStrategy {
     /**
      * Runs any collection of tests passed as arguments.
      *
-     * @param  {...Bool} tests
+     * @param  {Bool[]} tests
      * @returns Bool
      */
     runTests(...tests) {

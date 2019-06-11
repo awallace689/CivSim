@@ -8,7 +8,8 @@ class Shape {
     }
 
     /**
-     * Draw self according to en
+     * Shapes are delegates for entities with instructions
+     * for drawing themselves based on entity values.
      *
      * @abstract
      */
@@ -77,13 +78,13 @@ class Circle extends Shape {
  *                     }
  */
 function getRandomCircleInfo() {
-    let rad = Math.floor(Math.random() * 200);
+    let rad = CITY_RADIUS; 
     return {
         'r': Math.floor(Math.random() * 256),
         'g': Math.floor(Math.random() * 256),
         'b': Math.floor(Math.random() * 256),
         'rad': rad,
-        'x': Math.floor(Math.random() * ((WIDTH - rad) - rad) + rad),
-        'y': Math.floor(Math.random() * ((HEIGHT - rad) - rad) + rad),
-    }
+        'x': Math.floor(Math.random() * ((WIDTH - BORDER_INSET) - (CITY_RADIUS + BORDER_INSET)) + (CITY_RADIUS + BORDER_INSET)),
+        'y': Math.floor(Math.random() * ((HEIGHT - BORDER_INSET) - (CITY_RADIUS + BORDER_INSET)) + (CITY_RADIUS + BORDER_INSET)),
+    };
 }

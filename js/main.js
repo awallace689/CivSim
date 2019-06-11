@@ -49,12 +49,22 @@ function main() {
 
     // Draw a 'n' random cities.
     let rc;
-    for(let i = 0; i < 10; i++){
+    for (let i = 0; i < 4; i++) {
         rc = getRandomCircleInfo();
-        g.spawn(new City(c, rc['x'], rc['y'], rc['r'], rc['g'], rc['b']));
+        g.spawnSingle(
+            new VisibleEntity(
+                c,
+                rc['x'],
+                rc['y'],
+                rc['rad'],
+                rc['r'],
+                rc['g'],
+                rc['b'],
+                Circle
+            ));
     }
     // clearCanvas(c);
-    drawVisibleEntities(c, g);
+    drawVisibleEntities(g);
     console.log(g.entitySet);
 }
 
@@ -62,11 +72,11 @@ function main() {
  * 
  * @param {Gaia} gaia 
  */
-function drawVisibleEntities(c, gaia) { // TODO: Decouple from 
+function drawVisibleEntities(gaia) {
 
     gaia.entitySet.forEach((entity) => {
         entity.gaia = gaia;
-        if(typeof entity.draw === 'function'){
+        if (typeof entity.draw === 'function') {
             entity.draw();
         }
     });
